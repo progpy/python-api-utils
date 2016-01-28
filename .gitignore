@@ -9,3 +9,4 @@
 .~lock*#
 .directory
 .DS_Store
+.cache
