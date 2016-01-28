@@ -1,0 +1,11 @@
+*.pyc
+*~
+\#*#
+.\#*
+/.project
+/.pydevproject
+/.settings
+/.idea
+.~lock*#
+.directory
+.DS_Store
