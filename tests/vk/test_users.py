@@ -4,7 +4,7 @@ import mock
 import pytest
 import requests
 
-from vk.users import get_number_of_followers_or_none, get_username_by_id_or_none
+from vk.users import get_number_of_followers_or_none, get_username_by_id_or_none, get_male_female_friends_count
 
 
 @pytest.mark.parametrize('user_id, number_of_followers_in_response', [(1, 100500), (2, 0)])
@@ -48,7 +48,6 @@ def test_get_username_by_id_or_none(user_id, response_username):
     with mock.patch('requests.get') as mock_of_requests_get:
         mock_of_requests_get.return_value = mock_of_response = mock.Mock()
         mock_of_response.json.return_value = json_return_value
-
         username = get_username_by_id_or_none(user_id=user_id)
         assert username == response_username
 
@@ -59,3 +58,23 @@ def test_get_username_by_id_or_none_with_error():
     with mock.patch('requests.get') as mock_of_requests_get:
         mock_of_requests_get.side_effect = requests.exceptions.HTTPError()
         assert get_username_by_id_or_none(user_id) is None
+
+
+@pytest.mark.parametrize('user_id, female_count, male_count', [(5009988, 100, 200), (5009988, 0, 0)])
+def test_get_male_female_friends_count(user_id, female_count, male_count):
+    """Тестируем логику get_male_female_friends_count"""
+    json_return_value = {"response": ([{'sex': 1}] * female_count) + ([{'sex': 2}] * male_count)}
+    with mock.patch('requests.get') as mock_of_requests_get:
+        mock_of_requests_get.return_value = mock_of_response = mock.Mock()
+        mock_of_response.json.return_value = json_return_value
+
+        male_female_friends_count = get_male_female_friends_count(user_id=user_id)
+        assert (male_female_friends_count['female'] == female_count and male_female_friends_count['male'] == male_count)
+
+
+def test_get_male_female_friends_count_with_error():
+    """Тестируем get_male_female_friends_count при возникновении ошибки"""
+    user_id = 42
+    with mock.patch('requests.get') as mock_of_requests_get:
+        mock_of_requests_get.side_effect = requests.exceptions.HTTPError()
+        assert get_number_of_followers_or_none(user_id) is None
