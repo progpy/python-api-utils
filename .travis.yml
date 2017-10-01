@@ -7,7 +7,11 @@ install:
   - pip install -r requirements.txt
 
 script:
-  - py.test --flake8 --cov
+  - py.test
+  - py.test --flake8
+  - py.test --cov=vk
+  - py.test --cov=user_photo --cov-append
+  - py.test --cov=ya_translate --cov-append
 
 after_success:
   - coveralls
