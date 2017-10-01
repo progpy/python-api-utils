@@ -7,7 +7,7 @@ import requests
 from user_photo.users import get_user_photo_id_or_none
 
 
-@pytest.mark.parametrize('user_id, get_user_photo_id_or_none', [(53083705, 'http://cs5654.vk.me/u53083705/e_664a56e5.jpg'), (45269508, 'http://cs627828.vk.me/v627828508/c79b/bPMTCLUuKN0.jpg')])
+@pytest.mark.parametrize('user_id, url_in_response', [(53083705, 'http://cs5654.vk.me/u53083705/e_664a56e5.jpg'), (45269508, 'http://cs627828.vk.me/v627828508/c79b/bPMTCLUuKN0.jpg')])
 def test_get_user_photo_id_or_none(user_id, url_in_response):
     """Тестируем логику user_photo_id"""
     json_return_value = {
