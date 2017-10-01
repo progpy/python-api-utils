@@ -1,4 +1,4 @@
 requests
 mock
-coverage
+pytest-cov
 coveralls
